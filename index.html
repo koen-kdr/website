@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koen - Lander</title>
+    <title>Welkom! - Koen</title>
+    
+    <!-- Favicon (Emoji als icoon) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -13,13 +17,47 @@
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #030712;
             margin: 0;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            background: #020617;
+        }
+
+        /* Geanimeerde Mesh/Gradiënt Achtergrond */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(125deg, #020617, #0f172a, #1e1b4b, #020617);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Extra gloeiende bollen voor diepte */
+        .glow-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 1;
+            opacity: 0.4;
+            animation: floatSpheres 20s infinite alternate;
+        }
+
+        @keyframes floatSpheres {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 100px) scale(1.2); }
         }
 
         /* De 'Glow' die de muis volgt */
@@ -27,35 +65,58 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            z-index: 1;
+            z-index: 2;
             transition: transform 0.1s ease-out;
         }
 
         /* Glassmorphism kaart */
         .glass-card {
             background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 0 40px -10px rgba(99, 102, 241, 0.3),
+                0 25px 50px -12px rgba(0, 0, 0, 0.9);
+            position: relative;
+            overflow: hidden;
+            transform: none !important; 
         }
 
-        /* Tekst animatie */
+        /* Subtiele glans die over de kaart beweegt */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            transform: rotate(45deg);
+            animation: cardShine 10s infinite;
+        }
+
+        @keyframes cardShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* Tekst animatie met chroma effect */
         .animated-text {
-            background: linear-gradient(90deg, #fff, #818cf8, #fff);
+            background: linear-gradient(90deg, #fff, #818cf8, #c084fc, #fff);
             background-size: 200% auto;
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
-            animation: shine 5s linear infinite;
+            animation: textShine 4s linear infinite;
         }
 
-        @keyframes shine {
+        @keyframes textShine {
             to { background-position: 200% center; }
         }
 
@@ -65,83 +126,83 @@
             display: inline-block;
             width: 10px;
             height: 10px;
-            background-color: #6366f1;
+            background-color: #818cf8;
             border-radius: 50%;
+            box-shadow: 0 0 20px #818cf8;
         }
 
-        .status-dot::after {
+        .status-dot::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #6366f1;
+            background-color: #818cf8;
             border-radius: 50%;
-            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+            animation: pulse-ring 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
         }
 
         @keyframes pulse-ring {
-            0% { transform: scale(0.8); opacity: 0.8; }
-            100% { transform: scale(3.5); opacity: 0; }
+            0% { transform: scale(0.5); opacity: 0.8; }
+            100% { transform: scale(5); opacity: 0; }
         }
 
-        .floating {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        .coming-soon-text {
+            letter-spacing: 0.8em;
+            text-shadow: 0 0 20px rgba(129, 140, 248, 0.4);
         }
     </style>
 </head>
 <body class="text-slate-200">
 
+    <div class="animated-bg"></div>
+    <div class="glow-sphere w-96 h-96 bg-indigo-600 top-1/4 left-1/4"></div>
+    <div class="glow-sphere w-80 h-80 bg-purple-600 bottom-1/4 right-1/4"></div>
+
     <!-- Muis interactie laag -->
     <div id="cursor-glow"></div>
 
-    <!-- Achtergrond elementen -->
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-1/4 left-1/3 w-72 h-72 bg-indigo-600/10 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-1/4 right-1/3 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]"></div>
-    </div>
-
     <!-- Content -->
-    <div class="relative z-10 w-full max-w-lg px-6">
-        <div class="glass-card rounded-[3rem] p-10 md:p-14 text-center floating">
+    <div class="relative z-10 w-full max-w-xl px-6">
+        <div class="glass-card rounded-[4rem] p-12 md:p-20 text-center">
             
-            <!-- Status Orb Sectie -->
-            <div class="flex flex-col items-center mb-10">
-                <div class="bg-white/5 border border-white/10 px-4 py-2 rounded-2xl flex items-center space-x-3 mb-6">
+            <!-- Status Sectie -->
+            <div class="flex flex-col items-center mb-14">
+                <div class="bg-white/10 border border-white/20 px-6 py-2.5 rounded-full flex items-center space-x-4 mb-10 backdrop-blur-md">
                     <div class="status-dot"></div>
-                    <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-indigo-300">Live Creation</span>
+                    <!-- Aangepaste tekst hieronder -->
+                    <span class="text-[11px] font-extrabold tracking-[0.3em] uppercase text-white">Binnenkort beschikbaar</span>
                 </div>
                 
-                <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-2xl shadow-indigo-500/30 ring-1 ring-white/20">
-                    <i data-lucide="layers" class="text-white w-10 h-10"></i>
+                <!-- Modern Icon Container -->
+                <div class="relative group">
+                    <div class="absolute -inset-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-[2.5rem] blur-xl opacity-40 group-hover:opacity-80 transition duration-700"></div>
+                    <div class="relative w-28 h-28 rounded-[2rem] bg-slate-900/80 flex items-center justify-center border border-white/10 shadow-2xl backdrop-blur-sm">
+                        <i data-lucide="sparkles" class="text-indigo-400 w-14 h-14"></i>
+                    </div>
                 </div>
             </div>
 
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-                Iets nieuws <br> <span class="animated-text">komt eraan</span>
+            <h1 class="text-6xl md:text-7xl font-extrabold text-white mb-10 tracking-tighter leading-[1.1]">
+                Geduld wordt <br> <span class="animated-text">beloond</span>
             </h1>
 
-            <p class="text-slate-400 text-base md:text-lg mb-0 leading-relaxed font-light">
-                Momenteel leg ik de laatste hand aan een nieuwe digitale ervaring. Een plek waar design en code samenkomen.
+            <p class="text-indigo-100/70 text-lg md:text-xl mb-0 leading-relaxed font-medium max-w-sm mx-auto">
+                Er wordt momenteel een unieke digitale ervaring ontworpen. Blijf kijken, we zijn bijna klaar.
             </p>
 
         </div>
 
         <!-- Footer -->
-        <div class="mt-16 text-center">
-            <p class="text-[9px] text-slate-500 tracking-[0.6em] uppercase">
-                Binnenkort beschikbaar
+        <div class="mt-24 text-center">
+            <p class="coming-soon-text text-[12px] md:text-[14px] text-white font-black uppercase opacity-90">
+                Coming Soon
             </p>
-            <div class="mt-6 flex justify-center space-x-2">
-                <div class="w-1.5 h-1.5 rounded-full bg-indigo-500/40"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-indigo-500/20"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-indigo-500/10"></div>
+            <div class="mt-10 flex justify-center items-center space-x-4">
+                <div class="h-[1px] w-20 bg-gradient-to-r from-transparent to-indigo-500"></div>
+                <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                <div class="h-[1px] w-20 bg-gradient-to-l from-transparent to-indigo-500"></div>
             </div>
         </div>
     </div>
@@ -150,12 +211,13 @@
         // Initialiseer iconen
         lucide.createIcons();
 
-        // Muis interactie script
+        // Muis-glow
         const glow = document.getElementById('cursor-glow');
+
         window.addEventListener('mousemove', (e) => {
             const x = e.clientX;
             const y = e.clientY;
-            // Gebruik requestAnimationFrame voor soepelere beweging
+            
             requestAnimationFrame(() => {
                 glow.style.left = x + 'px';
                 glow.style.top = y + 'px';
@@ -164,4 +226,3 @@
     </script>
 </body>
 </html>
- 
